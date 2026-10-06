@@ -152,7 +152,7 @@ export default function AgentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-900 flex flex-col">
+    <div className="h-full w-full bg-surface-900 flex flex-col overflow-hidden">
       <Navbar />
 
       {/* Mobile subheader tab switcher */}

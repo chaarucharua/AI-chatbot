@@ -23,7 +23,7 @@ export default function Navbar() {
   }[user.role] || 'bg-slate-500/15 text-slate-400';
 
   return (
-    <header className="border-b border-surface-700 bg-surface-900/90 backdrop-blur-md sticky top-0 z-30">
+    <header className="border-b border-surface-700 bg-surface-900/90 backdrop-blur-md sticky top-0 z-30 shrink-0">
       <div className="h-16 px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-4 sm:gap-8">
           {/* Mobile menu hamburger toggle */}

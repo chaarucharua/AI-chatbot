@@ -132,10 +132,10 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-900 flex flex-col">
+    <div className="h-full w-full bg-surface-900 flex flex-col overflow-hidden">
       <Navbar />
 
-      <main className="flex-1 p-3 sm:p-6 max-w-7xl w-full mx-auto space-y-4 sm:space-y-6">
+      <main className="flex-1 overflow-y-auto p-3 sm:p-6 max-w-7xl w-full mx-auto space-y-4 sm:space-y-6">
         {/* Admin Header with Responsive Tabs */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-surface-700 pb-4">
           <div>
