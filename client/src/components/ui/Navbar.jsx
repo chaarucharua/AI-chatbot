@@ -1,5 +1,8 @@
 /**
- * Navbar.jsx — Main responsive navigation bar.
+ * Navbar.jsx — Role-aware navigation bar.
+ * Shows only the links relevant to each role.
+ * Customers never see Agent/Admin links.
+ * Agents/Admins never see the Assistant Chat link.
  */
 
 import React, { useState } from 'react';
@@ -13,20 +16,31 @@ export default function Navbar() {
 
   if (!user) return null;
 
-  const isAgentOrAdmin = ['SUPPORT_AGENT', 'ADMIN'].includes(user.role);
-  const isAdmin = user.role === 'ADMIN';
+  const isCustomer     = user.role === 'CUSTOMER';
+  const isAgent        = user.role === 'SUPPORT_AGENT';
+  const isAdmin        = user.role === 'ADMIN';
+  const isAgentOrAdmin = isAgent || isAdmin;
 
   const roleBadgeColor = {
-    ADMIN: 'bg-purple-500/15 text-purple-400 ring-1 ring-purple-500/30',
+    ADMIN:         'bg-purple-500/15 text-purple-400 ring-1 ring-purple-500/30',
     SUPPORT_AGENT: 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30',
-    CUSTOMER: 'bg-brand-500/15 text-brand-400 ring-1 ring-brand-500/30',
+    CUSTOMER:      'bg-brand-500/15 text-brand-400 ring-1 ring-brand-500/30',
   }[user.role] || 'bg-slate-500/15 text-slate-400';
+
+  const roleLabel = {
+    ADMIN:         'Admin',
+    SUPPORT_AGENT: 'Support Agent',
+    CUSTOMER:      'Customer',
+  }[user.role] || user.role;
+
+  // Logo link — takes each role to their own home
+  const homeHref = isAdmin ? '/admin' : isAgent ? '/agent' : '/chat';
 
   return (
     <header className="border-b border-surface-700 bg-surface-900/90 backdrop-blur-md sticky top-0 z-30 shrink-0">
       <div className="h-16 px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-4 sm:gap-8">
-          {/* Mobile menu hamburger toggle */}
+          {/* Mobile hamburger */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -42,8 +56,8 @@ export default function Navbar() {
             </svg>
           </button>
 
-          {/* Logo */}
-          <Link to="/chat" className="flex items-center gap-2.5 group">
+          {/* Logo — links to role home */}
+          <Link to={homeHref} className="flex items-center gap-2.5 group">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform duration-200">
               <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
@@ -58,19 +72,23 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation — role-aware links */}
           <nav className="hidden md:flex items-center gap-1">
-            <Link
-              to="/chat"
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname.startsWith('/chat')
-                  ? 'bg-surface-800 text-brand-400'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-surface-800/60'
-              }`}
-            >
-              Assistant Chat
-            </Link>
+            {/* Customers see: Assistant Chat only */}
+            {isCustomer && (
+              <Link
+                to="/chat"
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname.startsWith('/chat')
+                    ? 'bg-surface-800 text-brand-400'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-surface-800/60'
+                }`}
+              >
+                Assistant Chat
+              </Link>
+            )}
 
+            {/* Agents & Admins see: Ticket Queue */}
             {isAgentOrAdmin && (
               <Link
                 to="/agent"
@@ -84,6 +102,7 @@ export default function Navbar() {
               </Link>
             )}
 
+            {/* Admins see: Admin Console */}
             {isAdmin && (
               <Link
                 to="/admin"
@@ -107,7 +126,7 @@ export default function Navbar() {
           </div>
 
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${roleBadgeColor}`}>
-            {user.role}
+            {roleLabel}
           </span>
 
           <button
@@ -122,31 +141,35 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Navigation Menu */}
+      {/* Mobile Drawer — role-aware links */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-surface-700 bg-surface-850 p-4 space-y-2 animate-slide-up">
+        <div className="md:hidden border-t border-surface-700 bg-surface-850 p-4 space-y-2">
           <div className="pb-3 mb-2 border-b border-surface-700/60 flex items-center justify-between">
             <div>
               <div className="text-xs font-bold text-slate-200">{user.name}</div>
               <div className="text-[10px] text-slate-400">{user.email}</div>
             </div>
             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${roleBadgeColor}`}>
-              {user.role}
+              {roleLabel}
             </span>
           </div>
 
-          <Link
-            to="/chat"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2 rounded-lg text-sm font-medium ${
-              location.pathname.startsWith('/chat')
-                ? 'bg-brand-500/10 text-brand-400 border border-brand-500/20'
-                : 'text-slate-300 hover:bg-surface-800'
-            }`}
-          >
-            💬 Assistant Chat
-          </Link>
+          {/* Customer-only link */}
+          {isCustomer && (
+            <Link
+              to="/chat"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-3 py-2 rounded-lg text-sm font-medium ${
+                location.pathname.startsWith('/chat')
+                  ? 'bg-brand-500/10 text-brand-400 border border-brand-500/20'
+                  : 'text-slate-300 hover:bg-surface-800'
+              }`}
+            >
+              💬 Assistant Chat
+            </Link>
+          )}
 
+          {/* Agent/Admin links */}
           {isAgentOrAdmin && (
             <Link
               to="/agent"
@@ -157,7 +180,7 @@ export default function Navbar() {
                   : 'text-slate-300 hover:bg-surface-800'
               }`}
             >
-              🎫 Support Ticket Queue
+              🎫 Ticket Queue
             </Link>
           )}
 
@@ -171,7 +194,7 @@ export default function Navbar() {
                   : 'text-slate-300 hover:bg-surface-800'
               }`}
             >
-              ⚙️ Admin Operations Console
+              ⚙️ Admin Console
             </Link>
           )}
         </div>

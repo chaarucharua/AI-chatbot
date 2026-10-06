@@ -1,5 +1,6 @@
 /**
  * ProtectedRoute.jsx — Role-based route guard.
+ * Redirects each role to their correct home when unauthorized.
  */
 
 import React from 'react';
@@ -12,7 +13,7 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-900 text-slate-300">
+      <div className="h-full flex items-center justify-center bg-surface-900 text-slate-300">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
           <p className="text-sm">Verifying session...</p>
@@ -26,12 +27,9 @@ export default function ProtectedRoute({ allowedRoles = [] }) {
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(user?.role)) {
-    // If authenticated but unauthorized for this role, redirect to appropriate home
-    if (user?.role === 'CUSTOMER') {
-      return <Navigate to="/chat" replace />;
-    } else if (user?.role === 'SUPPORT_AGENT') {
-      return <Navigate to="/agent" replace />;
-    }
+    // Send each role to their correct home — never show a blank/error page
+    if (user?.role === 'ADMIN')         return <Navigate to="/admin" replace />;
+    if (user?.role === 'SUPPORT_AGENT') return <Navigate to="/agent" replace />;
     return <Navigate to="/chat" replace />;
   }
 

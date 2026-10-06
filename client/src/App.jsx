@@ -1,24 +1,39 @@
 /**
  * App.jsx — Root router configuration.
  *
- * Route structure:
- *   /login, /register   → public
- *   /chat/*             → CUSTOMER (protected)
- *   /agent/*            → SUPPORT_AGENT | ADMIN (protected)
- *   /admin/*            → ADMIN (protected)
+ * Role routing:
+ *   CUSTOMER         → /chat
+ *   SUPPORT_AGENT    → /agent
+ *   ADMIN            → /admin
+ *
+ * Access control:
+ *   /chat/*   → CUSTOMER only
+ *   /agent/*  → SUPPORT_AGENT | ADMIN
+ *   /admin/*  → ADMIN only
  */
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext.jsx'
+import { useAuth } from './context/AuthContext.jsx'
 import ProtectedRoute from './components/ui/ProtectedRoute.jsx'
 
-// Pages (lazy-loaded for performance)
+// Pages
 import LoginPage    from './pages/LoginPage.jsx'
 import RegisterPage from './pages/RegisterPage.jsx'
 import ChatPage     from './pages/ChatPage.jsx'
 import AgentPage    from './pages/AgentPage.jsx'
 import AdminPage    from './pages/AdminPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
+
+/** Sends each role to their correct home page after login or root visit. */
+function RoleHomeRedirect() {
+  const { user, isAuthenticated, loading } = useAuth()
+  if (loading) return null
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (user?.role === 'ADMIN')          return <Navigate to="/admin" replace />
+  if (user?.role === 'SUPPORT_AGENT')  return <Navigate to="/agent" replace />
+  return <Navigate to="/chat" replace />
+}
 
 export default function App() {
   return (
@@ -28,26 +43,26 @@ export default function App() {
         <Route path="/login"    element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* Customer routes */}
-        <Route element={<ProtectedRoute allowedRoles={['CUSTOMER', 'SUPPORT_AGENT', 'ADMIN']} />}>
+        {/* Customer-only: SUPPORT_AGENT and ADMIN are redirected away */}
+        <Route element={<ProtectedRoute allowedRoles={['CUSTOMER']} />}>
           <Route path="/chat"     element={<ChatPage />} />
           <Route path="/chat/:id" element={<ChatPage />} />
         </Route>
 
-        {/* Agent routes */}
+        {/* Agent workspace */}
         <Route element={<ProtectedRoute allowedRoles={['SUPPORT_AGENT', 'ADMIN']} />}>
-          <Route path="/agent"         element={<AgentPage />} />
+          <Route path="/agent"           element={<AgentPage />} />
           <Route path="/agent/:ticketId" element={<AgentPage />} />
         </Route>
 
-        {/* Admin routes */}
+        {/* Admin console */}
         <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
           <Route path="/admin" element={<AdminPage />} />
         </Route>
 
-        {/* Default redirects */}
-        <Route path="/"   element={<Navigate to="/chat" replace />} />
-        <Route path="*"   element={<NotFoundPage />} />
+        {/* Root → role-based home */}
+        <Route path="/" element={<RoleHomeRedirect />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AuthProvider>
   )

@@ -357,44 +357,16 @@ export default function ChatPage() {
           )}
         </div>
 
-        {/* Sidebar Footer: Role Switchers & User Profile */}
-        <div className="p-3 border-t border-surface-800/80 bg-surface-950/80 space-y-2">
-          {/* Staff Switchers */}
-          {isAgentOrAdmin && (
-            <div className="space-y-1">
-              <Link
-                to="/agent"
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-300 hover:text-white hover:bg-surface-800 transition-colors"
-              >
-                <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-                <span>Agent Workspace</span>
-              </Link>
-
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-300 hover:text-white hover:bg-surface-800 transition-colors"
-                >
-                  <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                  <span>Admin Console</span>
-                </Link>
-              )}
-            </div>
-          )}
-
-          {/* User Account Bar */}
-          <div className="pt-2 border-t border-surface-800/60 flex items-center justify-between gap-2 px-1">
+        {/* Sidebar Footer: User Profile only (chat is customer-only) */}
+        <div className="p-3 border-t border-surface-800/80 bg-surface-950/80">
+          <div className="flex items-center justify-between gap-2 px-1">
             <div className="flex items-center gap-2.5 min-w-0 flex-1">
               <div className="w-8 h-8 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30 flex items-center justify-center text-xs font-bold uppercase shrink-0">
                 {user?.name?.slice(0, 2) || 'U'}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="text-xs font-semibold text-slate-200 truncate">{user?.name}</div>
-                <div className="text-[10px] text-slate-500 truncate">{user?.role?.replace('_', ' ')}</div>
+                <div className="text-[10px] text-slate-500 truncate">Customer</div>
               </div>
             </div>
 

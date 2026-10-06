@@ -16,7 +16,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/chat';
+  const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +24,9 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const user = await login(email, password);
-      if (user.role === 'ADMIN' && from === '/chat') {
-        navigate('/admin');
-      } else if (user.role === 'SUPPORT_AGENT' && from === '/chat') {
-        navigate('/agent');
-      } else {
-        navigate(from, { replace: true });
-      }
+      await login(email, password);
+      // RoleHomeRedirect in App.jsx handles landing page per role
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
