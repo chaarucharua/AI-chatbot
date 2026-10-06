@@ -1,0 +1,22 @@
+[
+  {
+    "question": "Can I cancel or modify an order after placing it?",
+    "answer": "You can cancel or change your shipping address within 30 minutes of placing the order by going to 'My Orders' and clicking 'Cancel Order' or 'Edit Details'. After 30 minutes, orders enter fulfillment automation and cannot be modified; you will need to initiate a return once the package arrives.",
+    "category": "ORDER_SUPPORT"
+  },
+  {
+    "question": "What payment methods does NovaCart accept?",
+    "answer": "NovaCart accepts all major credit and debit cards (Visa, MasterCard, American Express, Discover), PayPal, Apple Pay, Google Pay, and NovaCart Store Gift Cards. We do not accept personal checks, cash on delivery (COD), or money orders.",
+    "category": "BILLING"
+  },
+  {
+    "question": "What should I do if an item is missing from my package?",
+    "answer": "Check your order tracking status first, as orders containing multiple items may ship in separate parcels from different warehouses. If all packages show delivered and an item is still missing, contact support within 48 hours with your order number and packing slip photo.",
+    "category": "ORDER_SUPPORT"
+  },
+  {
+    "question": "How do I apply a promotional code or coupon?",
+    "answer": "During checkout on the payment review page, enter your promo code in the 'Gift Card or Promo Code' box and click 'Apply'. Discounts are immediately reflected in your subtotal. Only one promotional code can be applied per order.",
+    "category": "BILLING"
+  }
+]

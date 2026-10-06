@@ -1,0 +1,23 @@
+{
+  "name": "customer-support-ai",
+  "version": "1.0.0",
+  "description": "NovaCart AI-powered customer support platform",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev --workspace=client\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "build": "npm run build --workspace=client",
+    "test": "npm run test --workspace=server",
+    "seed": "node scripts/seed-database.js",
+    "ingest": "node scripts/ingest-documents.js",
+    "health": "node scripts/health-check.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

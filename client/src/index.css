@@ -1,0 +1,236 @@
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ─────────────────────────────────────────────────────────────
+   index.css — Global design system for NovaCart Support UI
+   ───────────────────────────────────────────────────────────── */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties ── */
+:root {
+  --color-brand:      #6366f1;
+  --color-brand-dark: #4f46e5;
+  --color-surface:    #0f172a;
+  --color-surface-2:  #1e293b;
+  --color-surface-3:  #334155;
+  --color-text:       #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-border:     #334155;
+  --radius-sm:        0.375rem;
+  --radius-md:        0.5rem;
+  --radius-lg:        0.75rem;
+  --radius-xl:        1rem;
+  --radius-2xl:       1.5rem;
+  --shadow-glow:      0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+/* ── Base Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* ── Scrollbar Styling ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ── Focus Visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Component Layer ── */
+@layer components {
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2
+           text-sm font-medium transition-all duration-200 cursor-pointer
+           disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2
+           focus-visible:ring-brand-500 focus-visible:ring-offset-2
+           focus-visible:ring-offset-surface-900;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-500 text-white hover:bg-brand-600 active:scale-95
+           shadow-md hover:shadow-brand-500/20 hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface-800 text-slate-200 border border-surface-700
+           hover:bg-surface-700 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply btn text-slate-400 hover:text-slate-200 hover:bg-surface-800 active:scale-95;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600/90 text-white hover:bg-red-600 active:scale-95;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-surface-800 border border-surface-700 rounded-xl;
+  }
+
+  .card-hover {
+    @apply card transition-all duration-200 hover:border-surface-600
+           hover:bg-surface-700/60 cursor-pointer;
+  }
+
+  /* Form Inputs */
+  .input {
+    @apply w-full bg-surface-900 border border-surface-700 rounded-lg px-4 py-2.5
+           text-sm text-slate-100 placeholder:text-slate-500
+           focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500
+           transition-colors duration-200;
+  }
+
+  .input-error {
+    @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-slate-300 mb-1.5;
+  }
+
+  .error-text {
+    @apply text-xs text-red-400 mt-1;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-open       { @apply badge bg-yellow-400/15 text-yellow-400 ring-1 ring-yellow-400/30; }
+  .badge-progress   { @apply badge bg-blue-400/15 text-blue-400 ring-1 ring-blue-400/30; }
+  .badge-resolved   { @apply badge bg-green-400/15 text-green-400 ring-1 ring-green-400/30; }
+  .badge-closed     { @apply badge bg-surface-700 text-slate-400 ring-1 ring-surface-600; }
+  .badge-waiting    { @apply badge bg-orange-400/15 text-orange-400 ring-1 ring-orange-400/30; }
+  .badge-low        { @apply badge bg-slate-400/15 text-slate-400; }
+  .badge-medium     { @apply badge bg-blue-400/15 text-blue-400; }
+  .badge-high       { @apply badge bg-orange-400/15 text-orange-400; }
+  .badge-urgent     { @apply badge bg-red-400/15 text-red-400 ring-1 ring-red-400/30; }
+
+  /* Messages */
+  .message-customer {
+    @apply bg-brand-600 text-white rounded-2xl rounded-br-sm;
+  }
+
+  .message-bot {
+    @apply bg-surface-700 text-slate-100 rounded-2xl rounded-bl-sm border border-surface-600;
+  }
+
+  .message-agent {
+    @apply bg-emerald-600/20 text-emerald-100 rounded-2xl rounded-bl-sm
+           border border-emerald-600/30;
+  }
+
+  .message-system {
+    @apply bg-surface-800 text-slate-400 rounded-xl text-xs text-center
+           border border-surface-700 py-2 px-4;
+  }
+
+  /* Sidebar Nav */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400
+           hover:text-slate-100 hover:bg-surface-800 transition-all duration-150 cursor-pointer;
+  }
+
+  .nav-item-active {
+    @apply nav-item text-brand-400 bg-brand-500/10 hover:bg-brand-500/15;
+  }
+
+  /* Source Citation */
+  .source-chip {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs
+           bg-brand-500/10 text-brand-300 border border-brand-500/20
+           hover:bg-brand-500/20 cursor-pointer transition-colors duration-150;
+  }
+
+  /* Typing Indicator dots */
+  .typing-dot {
+    @apply w-2 h-2 rounded-full bg-slate-400;
+    animation: pulseDot 1.4s ease-in-out infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-surface-700;
+  }
+
+  /* Status dot */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+  .status-dot-online  { @apply status-dot bg-green-400; }
+  .status-dot-away    { @apply status-dot bg-yellow-400; }
+  .status-dot-offline { @apply status-dot bg-surface-600; }
+}
+
+/* ── Utility Layer ── */
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-400 to-violet-400;
+  }
+
+  .glass {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+  }
+
+  .glow-brand {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .no-scrollbar::-webkit-scrollbar   { display: none; }
+  .no-scrollbar                      { -ms-overflow-style: none; scrollbar-width: none; }
+}

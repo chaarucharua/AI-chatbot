@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+client/dist/
+
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.production
+
+# SQLite database files
+server/data/*.db
+server/data/*.db-shm
+server/data/*.db-wal
+
+# Uploaded knowledge files (managed via ingestion)
+server/uploads/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+*.swp
+*.swo
+
+# Test coverage
+coverage/
+
+# ChromaDB local data (if running locally without docker)
+chroma_data/
