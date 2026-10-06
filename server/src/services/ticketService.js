@@ -92,7 +92,7 @@ export class TicketService {
       args.push(s, s, s);
     }
 
-    sql += ' ORDER BY CASE t.priority WHEN "URGENT" THEN 1 WHEN "HIGH" THEN 2 WHEN "MEDIUM" THEN 3 ELSE 4 END, t.created_at DESC';
+    sql += " ORDER BY CASE t.priority WHEN 'URGENT' THEN 1 WHEN 'HIGH' THEN 2 WHEN 'MEDIUM' THEN 3 ELSE 4 END, t.created_at DESC";
 
     return await db.all(sql, args);
   }
